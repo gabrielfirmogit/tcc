@@ -2,7 +2,7 @@
 <?php
 // Cabeçalho
 include 'header.php';
-
+//teste github
 // Barra de Pesquisa com Filtros
 include 'search-bar.php';
 
