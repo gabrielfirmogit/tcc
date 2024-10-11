@@ -13,7 +13,7 @@ if (!usuarioEstaLogado()) {
 
 // Conectar ao banco de dados
 $host = '127.0.0.1';
-$db = 'tcc'; // Nome do seu banco de dados
+$db = 'rato'; // Nome do seu banco de dados
 $user = 'root'; // Seu usuário do MySQL
 $pass = ''; // Sua senha do MySQL
 
