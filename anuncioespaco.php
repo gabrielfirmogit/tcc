@@ -63,9 +63,9 @@ if ($result->num_rows > 0) {
 }
 
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,6 +73,7 @@ if ($result->num_rows > 0) {
     <link rel="icon" href="logofestiva.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100">
     <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
         <div class="text-center mb-6">
@@ -81,37 +82,43 @@ if ($result->num_rows > 0) {
         <form action="" method="post" class="space-y-4">
             <div>
                 <label for="titulo" class="block text-sm font-medium text-gray-700">Título:</label>
-                <input type="text" id="titulo" name="titulo" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="text" id="titulo" name="titulo"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div>
                 <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição:</label>
-                <textarea id="descricao" name="descricao" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"></textarea>
+                <textarea id="descricao" name="descricao"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"></textarea>
             </div>
             <div>
                 <label for="localizacao" class="block text-sm font-medium text-gray-700">Localização:</label>
-                <input type="text" id="localizacao" name="localizacao" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="text" id="localizacao" name="localizacao"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div>
                 <label for="preco" class="block text-sm font-medium text-gray-700">Preço:</label>
-                <input type="number" id="preco" name="preco" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="number" id="preco" name="preco"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div>
                 <label for="id_agente" class="block text-sm font-medium text-gray-700">ID do Agente:</label>
-                <input type="number" id="id_agente" name="id_agente" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="number" id="id_agente" name="id_agente"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div>
                 <label for="id_bairro" class="block text-sm font-medium text-gray-700">ID do Bairro:</label>
-                <input type="number" id="id_bairro" name="id_bairro" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
+                <input type="number" id="id_bairro" name="id_bairro"
+                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm">
             </div>
             <div class="text-center">
-                <input type="submit" value="Inserir" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                <input type="submit" value="Inserir"
+                    class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
             </div>
         </form>
-    </div>
-
-    <?php
+    </div> <?php
     // Fechar a conexão com o banco de dados
     $conn->close();
     ?>
 </body>
+
 </html>

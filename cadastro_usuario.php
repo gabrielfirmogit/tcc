@@ -18,7 +18,7 @@ renderHead($titulo_cabecalho); // Chama a função para renderizar o cabeçalho
                     class="tab-button border-b-2 border-transparent hover:border-purple-500 focus:outline-none p-2">Empreendedor</button>
             </div>
             <form id="formCliente" method="POST" action="php/cadUsuario.php">
-                <input type="hidden" name="tipo_usuario" value="usuario">
+                <input type="hidden" name="tipo_usuario" value="cliente">
                 <div class="mb-4">
                     <label for="emailCliente" class="block text-gray-700">Email</label>
                     <input type="email" id="emailCliente" name="email" required
