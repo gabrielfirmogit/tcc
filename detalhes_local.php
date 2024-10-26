@@ -4,9 +4,14 @@ require 'conexao.php';
 require 'componentes/cabecalho.php';
 require 'componentes/navbar.php';
 require 'componentes/footer.php';
-
+if (!isset($_SESSION['usuario_id']))
+{   
+    header('Location: login.php');
+    exit();
+}
 // Verifica se o ID foi passado na URL
-if (!isset($_GET['id'])) {
+if (!isset($_GET['id']))
+{
     header('Location: index.php');
     exit;
 }
@@ -29,11 +34,13 @@ $stmt->execute();
 $local = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Verifica se o local existe
-if (!$local) {
+if (!$local)
+{
     header('Location: index.php');
     exit;
 }
-
+$usuario_logado = isset($_SESSION['usuario_id']);
+$tipo_usuario = $_SESSION['tipo_usuario'] ?? '';
 // Renderiza o cabeçalho
 $titulo_cabecalho = htmlspecialchars($local['nome']);
 renderHead($titulo_cabecalho);
@@ -53,7 +60,8 @@ renderNavbar();
     <p class="mb-4"><?php echo htmlspecialchars($local['endereco']); ?></p>
     <p class="text-lg font-semibold">Média de Avaliações: <?php
     $media_avaliacoes = number_format($local['media_avaliacoes'], 1);
-    for ($i = 1; $i <= 5; $i++) {
+    for ($i = 1; $i <= 5; $i++)
+    {
         echo $i <= $media_avaliacoes ? '★' : '☆';
     }
     ?></p>
@@ -62,30 +70,23 @@ renderNavbar();
     <p><strong>Telefone:</strong> <?php echo htmlspecialchars($local['telefone_proprietario']); ?></p>
     <a href="https://wa.me/<?php echo preg_replace('/[^\d]/', '', $local['telefone_proprietario']); ?>"
         class="mt-4 inline-block bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2">
-        Contato via WhatsApp </a>
-    <h2 class="text-3xl font-semibold mt-8">Comentários</h2> <?php
-    // Consulta para obter comentários e avaliações
-    $queryComentarios = "SELECT c.feedback, c.estrelas, u.email AS email_usuario 
-                         FROM comentarios c 
-                         JOIN usuario u ON c.id_usuario = u.id 
-                         WHERE c.id_local = :id_local 
-                         ORDER BY c.created_at DESC";
-
-    $stmtComentarios = $pdo->prepare($queryComentarios);
-    $stmtComentarios->bindParam(':id_local', $id_local);
-    $stmtComentarios->execute();
-    $comentarios = $stmtComentarios->fetchAll(PDO::FETCH_ASSOC);
-
-    if ($comentarios): ?> <ul class="list-disc pl-5"> <?php foreach ($comentarios as $comentario): ?> <li class="mb-4">
-            <p><strong><?php echo htmlspecialchars($comentario['email_usuario']); ?>:</strong></p>
-            <p><?php echo nl2br(htmlspecialchars($comentario['feedback'])); ?></p>
-            <p class="text-sm text-gray-600">Avaliação:
-                <?php echo str_repeat('★', $comentario['estrelas']) . str_repeat('☆', 5 - $comentario['estrelas']); ?>
-            </p>
-        </li> <?php endforeach; ?> </ul> <?php else: ?> <p>Não há comentários para este local.</p> <?php endif; ?> <a
-        href="index.php"
-        class="mt-4 inline-block bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-        Voltar </a>
+        Contato via WhatsApp </a> <?php if ($usuario_logado && strtolower($tipo_usuario) == 'cliente'): ?> <form
+        action="php/salvar_avaliacao.php" method="POST" class="mt-4">
+        <input type="hidden" name="id_local" value="<?php echo htmlspecialchars($id_local); ?>">
+        <div class="mb-4">
+            <label for="estrelas" class="block text-gray-700">Sua Avaliação:</label>
+            <select name="estrelas" id="estrelas" required class="mt-1 block w-full p-2 border rounded">
+                <option value="">Selecione...</option>
+                <option value="1">1 Estrela</option>
+                <option value="2">2 Estrelas</option>
+                <option value="3">3 Estrelas</option>
+                <option value="4">4 Estrelas</option>
+                <option value="5">5 Estrelas</option>
+            </select>
+        </div>
+        <button type="submit" class="bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700">Enviar
+            Avaliação</button>
+    </form> <?php endif; ?>
 </div> <?php
 renderFooter();
 ?>

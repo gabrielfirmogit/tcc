@@ -4,7 +4,11 @@ require 'conexao.php';
 require 'componentes/cabecalho.php';
 require 'componentes/navbar.php';
 require 'componentes/footer.php';
-
+if (!isset($_SESSION['usuario_id']))
+{
+    header('Location: login.php');
+    exit();
+}
 // Define título da página
 $titulo_cabecalho = "Locais Disponíveis";
 renderHead($titulo_cabecalho);
@@ -22,7 +26,8 @@ $params = [
     ':preco_max' => $precoMaximo,
 ];
 
-if (!empty($nomeFiltro)) {
+if (!empty($nomeFiltro))
+{
     $query .= " AND nome LIKE :nome";
     $params[':nome'] = '%' . $nomeFiltro . '%';
 }
@@ -30,7 +35,8 @@ if (!empty($nomeFiltro)) {
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $locais = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?> <div class="container mx-auto px-4 py-8">
+?>
+<div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Locais Disponíveis</h1>
     <!-- Filtros -->
     <form method="POST" class="mb-6">
@@ -59,29 +65,34 @@ $locais = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </form>
     <!-- Exibe os locais -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> <?php if (!empty($locais)): ?>
-        <?php foreach ($locais as $local): ?> <div class="bg-white rounded-lg shadow-md p-4"> <?php
+            <?php foreach ($locais as $local): ?>
+                <div class="bg-white rounded-lg shadow-md p-4"> <?php
                 // Obter imagem do local
                 $stmtImg = $pdo->prepare("SELECT url FROM imagens_local WHERE id_local = :id_local LIMIT 1");
                 $stmtImg->execute([':id_local' => $local['id']]);
                 $imagem = $stmtImg->fetchColumn();
                 ?> <img src="<?php echo htmlspecialchars($imagem); ?>"
-                alt="<?php echo htmlspecialchars($local['nome']); ?>" class="w-full h-40 object-cover rounded-md mb-4">
-            <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($local['nome']); ?></h2>
-            <p class="text-gray-600 mb-2"><?php echo htmlspecialchars($local['descricao']); ?></p>
-            <p class="text-lg font-bold">R$ <?php echo number_format($local['preco'], 2, ',', '.'); ?></p>
-            <!-- Exibindo média de avaliações como estrelas -->
-            <p class="font-semibold">Média de Avaliações: <?php
+                        alt="<?php echo htmlspecialchars($local['nome']); ?>" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h2 class="text-xl font-semibold"><?php echo htmlspecialchars($local['nome']); ?></h2>
+                    <p class="text-gray-600 mb-2"><?php echo htmlspecialchars($local['descricao']); ?></p>
+                    <p class="text-lg font-bold">R$ <?php echo number_format($local['preco'], 2, ',', '.'); ?></p>
+                    <!-- Exibindo média de avaliações como estrelas -->
+                    <p class="font-semibold">Média de Avaliações: <?php
                     $media_avaliacoes = number_format($local['media_avaliacoes'], 1);
-                    for ($i = 1; $i <= 5; $i++) {
+                    for ($i = 1; $i <= 5; $i++)
+                    {
                         echo $i <= $media_avaliacoes ? '★' : '☆';
                     }
                     ?> </p>
-            <!-- Botão para detalhes -->
-            <a href="detalhes_local.php?id=<?php echo $local['id']; ?>"
-                class="mt-4 inline-block bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">Saber
-                mais</a>
-        </div> <?php endforeach; ?> <?php else: ?> <p class="text-center text-gray-500">Nenhum local encontrado.</p>
-        <?php endif; ?> </div>
-</div> <?php
+                    <!-- Botão para detalhes -->
+                    <a href="detalhes_local.php?id=<?php echo $local['id']; ?>"
+                        class="mt-4 inline-block bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">Saber
+                        mais</a>
+                </div> <?php endforeach; ?> <?php else: ?>
+            <p class="text-center text-gray-500">Nenhum local encontrado.</p>
+        <?php endif; ?>
+    </div>
+</div>
+<?php
 renderFooter();
 ?>

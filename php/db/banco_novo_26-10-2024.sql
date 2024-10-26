@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2024 at 09:48 PM
+-- Generation Time: Oct 26, 2024 at 08:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comentarios`
+-- Table structure for table `avaliacoes`
 --
 
 CREATE TABLE `avaliacoes` (
@@ -35,10 +35,30 @@ CREATE TABLE `avaliacoes` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Triggers `avaliacoes`
+--
+DELIMITER $$
+CREATE TRIGGER `atualiza_media_após_insert` AFTER INSERT ON `avaliacoes` FOR EACH ROW BEGIN
+  DECLARE nova_media DECIMAL(3,2);
+  SELECT AVG(estrelas) INTO nova_media FROM avaliacoes WHERE id_local = NEW.id_local;
+  UPDATE locais SET media_avaliacoes = nova_media WHERE id = NEW.id_local;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `atualiza_media_após_update` AFTER UPDATE ON `avaliacoes` FOR EACH ROW BEGIN
+  DECLARE nova_media DECIMAL(3,2);
+  SELECT AVG(estrelas) INTO nova_media FROM avaliacoes WHERE id_local = NEW.id_local;
+  UPDATE locais SET media_avaliacoes = nova_media WHERE id = NEW.id_local;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `comentarios`
+-- Table structure for table `comentarios`
 --
 
 CREATE TABLE `comentarios` (
@@ -53,7 +73,7 @@ CREATE TABLE `comentarios` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `favoritos`
+-- Table structure for table `favoritos`
 --
 
 CREATE TABLE `favoritos` (
@@ -66,7 +86,7 @@ CREATE TABLE `favoritos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `imagens_local`
+-- Table structure for table `imagens_local`
 --
 
 CREATE TABLE `imagens_local` (
@@ -79,7 +99,7 @@ CREATE TABLE `imagens_local` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `locais`
+-- Table structure for table `locais`
 --
 
 CREATE TABLE `locais` (
@@ -89,13 +109,13 @@ CREATE TABLE `locais` (
   `endereco` varchar(255) NOT NULL,
   `descricao` text NOT NULL,
   `preco` decimal(10,2) NOT NULL,
-  `media_avaliacoes` decimal(3,2) DEFAULT NULL
+  `media_avaliacoes` decimal(3,2) DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `reservas`
+-- Table structure for table `reservas`
 --
 
 CREATE TABLE `reservas` (
@@ -109,7 +129,7 @@ CREATE TABLE `reservas` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `reserva_servicos`
+-- Table structure for table `reserva_servicos`
 --
 
 CREATE TABLE `reserva_servicos` (
@@ -122,7 +142,7 @@ CREATE TABLE `reserva_servicos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `servicos_complementares`
+-- Table structure for table `servicos_complementares`
 --
 
 CREATE TABLE `servicos_complementares` (
@@ -136,7 +156,7 @@ CREATE TABLE `servicos_complementares` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -150,11 +170,11 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Índices para tabelas despejadas
+-- Indexes for dumped tables
 --
 
 --
--- Índices de tabela `avaliacoes`
+-- Indexes for table `avaliacoes`
 --
 ALTER TABLE `avaliacoes`
   ADD PRIMARY KEY (`id`),
@@ -162,7 +182,7 @@ ALTER TABLE `avaliacoes`
   ADD KEY `id_local` (`id_local`);
 
 --
--- Índices de tabela `comentarios`
+-- Indexes for table `comentarios`
 --
 ALTER TABLE `comentarios`
   ADD PRIMARY KEY (`id`),
@@ -170,7 +190,7 @@ ALTER TABLE `comentarios`
   ADD KEY `id_local` (`id_local`);
 
 --
--- Índices de tabela `favoritos`
+-- Indexes for table `favoritos`
 --
 ALTER TABLE `favoritos`
   ADD PRIMARY KEY (`id`),
@@ -178,21 +198,21 @@ ALTER TABLE `favoritos`
   ADD KEY `id_local` (`id_local`);
 
 --
--- Índices de tabela `imagens_local`
+-- Indexes for table `imagens_local`
 --
 ALTER TABLE `imagens_local`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_local` (`id_local`);
 
 --
--- Índices de tabela `locais`
+-- Indexes for table `locais`
 --
 ALTER TABLE `locais`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Índices de tabela `reservas`
+-- Indexes for table `reservas`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`id`),
@@ -200,7 +220,7 @@ ALTER TABLE `reservas`
   ADD KEY `id_local` (`id_local`);
 
 --
--- Índices de tabela `reserva_servicos`
+-- Indexes for table `reserva_servicos`
 --
 ALTER TABLE `reserva_servicos`
   ADD PRIMARY KEY (`id`),
@@ -208,121 +228,121 @@ ALTER TABLE `reserva_servicos`
   ADD KEY `id_servico` (`id_servico`);
 
 --
--- Índices de tabela `servicos_complementares`
+-- Indexes for table `servicos_complementares`
 --
 ALTER TABLE `servicos_complementares`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `avaliacoes`
+-- AUTO_INCREMENT for table `avaliacoes`
 --
 ALTER TABLE `avaliacoes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `comentarios`
+-- AUTO_INCREMENT for table `comentarios`
 --
 ALTER TABLE `comentarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `favoritos`
+-- AUTO_INCREMENT for table `favoritos`
 --
 ALTER TABLE `favoritos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `imagens_local`
+-- AUTO_INCREMENT for table `imagens_local`
 --
 ALTER TABLE `imagens_local`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `locais`
+-- AUTO_INCREMENT for table `locais`
 --
 ALTER TABLE `locais`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `reservas`
+-- AUTO_INCREMENT for table `reservas`
 --
 ALTER TABLE `reservas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `reserva_servicos`
+-- AUTO_INCREMENT for table `reserva_servicos`
 --
 ALTER TABLE `reserva_servicos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `servicos_complementares`
+-- AUTO_INCREMENT for table `servicos_complementares`
 --
 ALTER TABLE `servicos_complementares`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Restrições para tabelas despejadas
+-- Constraints for dumped tables
 --
 
 --
--- Restrições para tabelas `avaliacoes`
+-- Constraints for table `avaliacoes`
 --
 ALTER TABLE `avaliacoes`
   ADD CONSTRAINT `avaliacoes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `avaliacoes_ibfk_2` FOREIGN KEY (`id_local`) REFERENCES `locais` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `comentarios`
+-- Constraints for table `comentarios`
 --
 ALTER TABLE `comentarios`
   ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_local`) REFERENCES `locais` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `favoritos`
+-- Constraints for table `favoritos`
 --
 ALTER TABLE `favoritos`
   ADD CONSTRAINT `favoritos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `favoritos_ibfk_2` FOREIGN KEY (`id_local`) REFERENCES `locais` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `imagens_local`
+-- Constraints for table `imagens_local`
 --
 ALTER TABLE `imagens_local`
   ADD CONSTRAINT `imagens_local_ibfk_1` FOREIGN KEY (`id_local`) REFERENCES `locais` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `locais`
+-- Constraints for table `locais`
 --
 ALTER TABLE `locais`
   ADD CONSTRAINT `locais_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `reservas`
+-- Constraints for table `reservas`
 --
 ALTER TABLE `reservas`
   ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_local`) REFERENCES `locais` (`id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `reserva_servicos`
+-- Constraints for table `reserva_servicos`
 --
 ALTER TABLE `reserva_servicos`
   ADD CONSTRAINT `reserva_servicos_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id`) ON DELETE CASCADE,

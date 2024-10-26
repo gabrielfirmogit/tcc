@@ -3,7 +3,8 @@
 $conn = new mysqli('localhost', 'usuario', 'senha', 'banco');
 
 // Verifica se a conexão falhou
-if ($conn->connect_error) {
+if ($conn->connect_error)
+{
     die('Erro de conexão: ' . $conn->connect_error);
 }
 
@@ -17,9 +18,12 @@ $cpf_cnpj = $_POST['cpf_cnpj'];
 $sql = "UPDATE usuarios SET email='$email', telefone='$telefone', senha='$senha', cpf_cnpj='$cpf_cnpj' WHERE id_usuario = [ID DO USUÁRIO]";
 
 // Executa a query e verifica se foi bem-sucedida
-if ($conn->query($sql) === TRUE) {
+if ($conn->query($sql) === TRUE)
+{
     echo 'Cadastro atualizado com sucesso!';
-} else {
+}
+else
+{
     echo 'Erro ao atualizar cadastro: ' . $conn->error;
 }
 

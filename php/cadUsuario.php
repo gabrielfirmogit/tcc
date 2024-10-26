@@ -3,7 +3,8 @@ session_start();
 require '../conexao.php'; // Importa a conexão com o banco de dados
 
 // Verifica se o formulário foi enviado
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
     // Obtém os dados do formulário
     $email = $_POST['email'];
     $senha = password_hash($_POST['senha'], PASSWORD_BCRYPT); // Criptografa a senha
@@ -12,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cnpj = $_POST['cnpj'] ?? null; // Recebe o CNPJ se for empreendedor
 
     // Insere os dados na tabela 'usuario'
-    try {
+    try
+    {
         $pdo->beginTransaction();
 
         // Insere na tabela 'usuario'
@@ -38,11 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: ../login.php'); // Redireciona para a página de login
         exit;
 
-    } catch (PDOException $e) {
+    }
+    catch (PDOException $e)
+    {
         $pdo->rollBack(); // Desfaz a transação em caso de erro
         die("Erro ao cadastrar usuário: " . $e->getMessage());
     }
-} else {
+}
+else
+{
     // Se a página foi acessada diretamente, redireciona para o formulário de cadastro
     header('Location: ../cadastro_usuario.php');
     exit;

@@ -4,7 +4,8 @@ require 'conexao.php'; // Importa a conexão com o banco de dados
 require 'componentes/cabecalho.php'; // Inclui o cabeçalho
 require 'componentes/footer.php'; // Inclui o rodapé
 // Redireciona para o index se o usuário já estiver logado
-if (isset($_SESSION['usuario_id'])) {
+if (isset($_SESSION['usuario_id']))
+{
     header("Location: index.php");
     exit();
 }
@@ -30,6 +31,8 @@ renderHead($titulo_cabecalho); // Chama a função para renderizar o cabeçalho
                 </div>
                 <button type="submit" class="w-full bg-purple-500 text-white py-2 rounded">Entrar</button>
             </form>
+            <a href="cadastro_usuario.php" class="mt-4 text-sm hover:text-purple-600 hover:underline">não possui uma
+                conta? </a>
         </div>
     </div> <?php renderFooter(); // Inclui o rodapé ?>
 </body>

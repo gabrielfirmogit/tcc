@@ -3,7 +3,8 @@
 include 'conexao.php';
 
 // Criar uma nova listagem de propriedade
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
     $titulo = $_POST["titulo"];
     $descricao = $_POST["descricao"];
     $localizacao = $_POST["localizacao"];
@@ -32,8 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $sql = "SELECT * FROM propriedades";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($result->num_rows > 0)
+{
+    while ($row = $result->fetch_assoc())
+    {
         echo "Título: " . $row["titulo"] . "<br>";
         echo "Descrição: " . $row["descricao"] . "<br>";
         echo "Localização: " . $row["localizacao"] . "<br>";
@@ -46,8 +49,10 @@ if ($result->num_rows > 0) {
         $stmt->execute();
         $bairro_result = $stmt->get_result();
 
-        if ($bairro_result->num_rows > 0) {
-            while ($bairro_row = $bairro_result->fetch_assoc()) {
+        if ($bairro_result->num_rows > 0)
+        {
+            while ($bairro_row = $bairro_result->fetch_assoc())
+            {
                 $sql = "SELECT * FROM bairros WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $bairro_row["id_bairro"]);
@@ -58,7 +63,9 @@ if ($result->num_rows > 0) {
             }
         }
     }
-} else {
+}
+else
+{
     echo "0 resultados";
 }
 

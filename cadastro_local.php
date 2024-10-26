@@ -10,21 +10,24 @@ require 'componentes/footer.php';
 require 'php/processar_cadastro_local.php';
 
 // Verifica se o usuário está logado e é empreendedor
-if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'empreendedor') {
+if (!isset($_SESSION['id_usuario']) || $_SESSION['tipo_usuario'] != 'empreendedor')
+{
     header('Location: login.php');
     exit();
 }
 
 renderHead($titulo_cabecalho);
 renderNavbar();
-?> <div class="container mx-auto px-4 py-8">
+?>
+<div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Cadastrar Novo Local</h1>
     <form method="POST" action="" enctype="multipart/form-data"
-        class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md"> <?php if (isset($erro)): ?> <div
-            class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"> <?php echo $erro; ?> </div>
-        <?php endif; ?> <?php if (isset($sucesso)): ?> <div
-            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"> <?php echo $sucesso; ?>
-        </div> <?php endif; ?> <div class="space-y-4">
+        class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md"> <?php if (isset($erro)): ?>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"> <?php echo $erro; ?> </div>
+        <?php endif; ?> <?php if (isset($sucesso)): ?>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"> <?php echo $sucesso; ?>
+            </div> <?php endif; ?>
+        <div class="space-y-4">
             <div>
                 <label for="nome" class="block text-sm font-medium text-gray-700">Nome do Local</label>
                 <input type="text" id="nome" name="nome" required
@@ -63,6 +66,7 @@ renderNavbar();
             </div>
         </div>
     </form>
-</div> <?php
+</div>
+<?php
 renderFooter();
 ?>
