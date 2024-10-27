@@ -4,7 +4,7 @@ require 'conexao.php';
 require 'componentes/cabecalho.php';
 require 'componentes/navbar.php';
 require 'componentes/footer.php';
-if (!isset($_SESSION['usuario_id']))
+if (!isset($_SESSION['id_usuario']))
 {   
     header('Location: login.php');
     exit();
