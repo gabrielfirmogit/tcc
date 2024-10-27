@@ -9,9 +9,9 @@ if (!isset($_SESSION['id_usuario']))
     header('Location: login.php');
     exit();
 }
+
 // Verifica se o ID foi passado na URL
-if (!isset($_GET['id']))
-{
+if (!isset($_GET['id'])) {
     header('Location: index.php');
     exit;
 }
@@ -34,13 +34,14 @@ $stmt->execute();
 $local = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Verifica se o local existe
-if (!$local)
-{
+if (!$local) {
     header('Location: index.php');
     exit;
 }
+
 $usuario_logado = isset($_SESSION['usuario_id']);
 $tipo_usuario = $_SESSION['tipo_usuario'] ?? '';
+
 // Renderiza o cabeçalho
 $titulo_cabecalho = htmlspecialchars($local['nome']);
 renderHead($titulo_cabecalho);

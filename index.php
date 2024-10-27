@@ -9,6 +9,7 @@ if (!isset($_SESSION['id_usuario']))
     header('Location: login.php');
     exit();
 }
+
 // Define título da página
 $titulo_cabecalho = "Locais Disponíveis";
 renderHead($titulo_cabecalho);
@@ -26,8 +27,7 @@ $params = [
     ':preco_max' => $precoMaximo,
 ];
 
-if (!empty($nomeFiltro))
-{
+if (!empty($nomeFiltro)) {
     $query .= " AND nome LIKE :nome";
     $params[':nome'] = '%' . $nomeFiltro . '%';
 }
