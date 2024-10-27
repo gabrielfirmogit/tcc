@@ -7,34 +7,21 @@ renderNavbar(); // Renderiza a navbar
 ?>
 
 <body class="bg-gray-100 flex flex-col min-h-screen">
-    <div class="w-full max-w-4xl mx-auto my-10 px-6">
-        <!-- Sobre Nós -->
-        <h1 class="text-4xl font-bold text-[#9333EA] mb-6 text-center">SOBRE NÓS</h1>
-        <p class="text-lg text-gray-600 mb-12 text-center">Nós somos um grupo de estudantes dedicados a facilitar a busca por edículas e salões de festas, criando uma plataforma que une clientes e proprietários de maneira eficiente. Nosso site foi desenvolvido para atender a uma demanda crescente por uma solução prática e organizada na busca por locais para eventos, eliminando a necessidade de pesquisas manuais em marketplaces ou ligações telefônicas.</p>
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-lg mt-10 max-w-3xl flex-grow-0 flex-shrink-0"> <!-- Alterado para flex-grow-0 e flex-shrink-0 -->
+        <h1 class="text-3xl font-bold text-purple-700 mb-4">Termos de Uso</h1>
+        <p class="text-gray-700 mb-6">Estes Termos de Uso ("Termos") estabelecem as condições sob as quais você pode acessar e usar o site Festiva e os serviços oferecidos por nós. Ao utilizar este site, você concorda em cumprir e estar vinculado a estes Termos. Se você não concorda com alguma parte destes Termos, você não deve acessar ou utilizar o site.</p>
         
-        <!-- Objetivo do Nosso Site -->
-        <div class="flex items-start mb-12">
-            <div class="w-1/2 pr-6">
-                <h2 class="text-3xl font-bold text-[#9333EA] mb-4 uppercase">OBJETIVO DO NOSSO SITE</h2>
-                <p class="text-lg text-gray-600">O principal objetivo do nosso site é otimizar a busca por espaços para eventos, oferecendo uma plataforma que integra diversos recursos para simplificar a experiência do usuário. Através de filtros de preço, tipo de local e uma barra de busca por endereço, nossos usuários podem encontrar rapidamente o espaço ideal para suas necessidades.</p>
-            </div>
-            <div class="w-1/2">
-                <img src="uploads/locais/image1.jpg" alt="Objetivo do Nosso Site" class="w-full h-auto rounded-lg shadow">
-            </div>
-        </div>
-        
-        <!-- Benefícios -->
-        <div class="flex items-start mb-12">
-            <div class="w-1/2">
-                <img src="uploads/beneficios/image1.jpg" alt="Benefícios" class="w-full h-auto rounded-lg shadow">
-            </div>
-            <div class="w-1/2 pl-6">
-                <h2 class="text-3xl font-bold text-[#9333EA] mb-4 uppercase">BENEFÍCIOS</h2>
-                <p class="text-lg text-gray-600 mb-6"><strong>1. Busca Eficiente:</strong> Com nossa interface intuitiva, os usuários podem encontrar locais para eventos de forma rápida e prática, economizando tempo e evitando a frustração de buscas desorganizadas.</p>
-                <p class="text-lg text-gray-600 mb-6"><strong>2. Visibilidade para Proprietários:</strong> Proprietários de edículas e salões de festas podem anunciar seus locais de forma clara e organizada, aumentando sua visibilidade e a chance de fechar negócios.</p>
-                <p class="text-lg text-gray-600"><strong>3. Informações Abrangentes:</strong> O site oferece informações essenciais como fotos, endereços, preços estimados e avaliações de outros usuários, proporcionando uma visão completa dos espaços disponíveis e ajudando na tomada de decisão.</p>
-            </div>
-        </div>
+        <h2 class="text-2xl font-semibold text-purple-700 mb-2">Modificações</h2>
+        <p class="text-gray-700 mb-6">Reservamo-nos o direito de alterar estes Termos a qualquer momento. Quaisquer modificações serão publicadas nesta página e, ao continuar a usar o site, você concorda em estar sujeito aos Termos revisados. Recomendamos que você reveja esta seção periodicamente para se manter atualizado sobre quaisquer mudanças.</p>
+
+        <h2 class="text-2xl font-semibold text-purple-700 mb-2">Política de Privacidade</h2>
+        <p class="text-gray-700 mb-6">Estamos comprometidos em proteger a sua privacidade. Coletamos informações pessoais que você nos fornece ao se registrar, fazer uma reserva ou entrar em contato conosco. Isso pode incluir seu nome, endereço de e-mail, número de telefone e outras informações necessárias para fornecer nossos serviços.</p>
+
+        <h3 class="text-xl font-semibold text-purple-700 mb-2">Compartilhamento de Informações</h3>
+        <p class="text-gray-700 mb-6">Não compartilhamos suas informações pessoais com terceiros sem o seu consentimento, exceto quando necessário para cumprir a lei ou proteger nossos direitos. Podemos usar prestadores de serviços terceirizados para processar pagamentos e fornecer suporte ao cliente, que também estão obrigados a proteger suas informações.</p>
+
+        <h2 class="text-2xl font-semibold text-purple-700 mb-2">Contato</h2>
+        <p class="text-gray-700 mb-6">Se você tiver dúvidas, comentários ou sugestões sobre nossos Termos de Uso ou Política de Privacidade, entre em contato conosco através do e-mail: tccfestiva@gmail.com Estamos aqui para ajudar!</p>
     </div>
 
     <?php require 'componentes/footer.php'; // Inclui o componente do rodapé ?>
