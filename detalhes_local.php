@@ -21,6 +21,7 @@ $id_local = $_GET['id'];
 
 // Consulta os detalhes do local e do proprietário
 $query = "SELECT l.*, 
+                 l.tipo_local,  -- Incluímos aqui o campo tipo_local
                  u.email AS email_proprietario, 
                  u.telefone AS telefone_proprietario, 
                  COUNT(av.id) AS numero_avaliacoes, 
@@ -81,6 +82,10 @@ renderNavbar();
             <!-- Título e Localização -->
             <h1 class="text-3xl font-semibold mb-2"><?php echo htmlspecialchars($local['nome']); ?></h1>
             <p class="text-gray-600 mb-6"><?php echo htmlspecialchars($local['endereco']); ?></p>
+            <div class="mb-4">
+    <h2 class="text-xl font-semibold">Tipo de Local</h2>
+    <p class="text-lg mt-2"><?php echo htmlspecialchars($local['tipo_local']); ?></p>
+</div>
 
             <!-- Descrição -->
             <div class="mb-4">

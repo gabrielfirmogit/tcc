@@ -15,12 +15,14 @@ $titulo_cabecalho = "Locais Disponíveis";
 renderHead($titulo_cabecalho);
 renderNavbar();
 
-// Filtragem
-$nomeFiltro = isset($_POST['nome']) ? $_POST['nome'] : '';
-$precoMinimo = isset($_POST['preco_min']) ? $_POST['preco_min'] : 0;
-$precoMaximo = isset($_POST['preco_max']) ? $_POST['preco_max'] : 1000000;
+// Captura dos filtros enviados pelo formulário
+$nomeFiltro = $_POST['nome'] ?? '';
+$precoMinimo = $_POST['preco_min'] ?? 0;
+$precoMaximo = $_POST['preco_max'] ?? 1000000;
+$tipo_local = $_POST['tipo_local'] ?? '';
+$avaliacaoMinima = $_POST['avaliacao_min'] ?? 0;
 
-// Consulta os locais com base nos filtros
+// Consulta com filtros aplicados
 $query = "SELECT * FROM locais WHERE preco BETWEEN :preco_min AND :preco_max";
 $params = [
     ':preco_min' => $precoMinimo,
@@ -32,10 +34,20 @@ if (!empty($nomeFiltro)) {
     $params[':nome'] = '%' . $nomeFiltro . '%';
 }
 
+if (!empty($tipo_local)) {
+    $query .= " AND tipo_local = :tipo_local";
+    $params[':tipo_local'] = $tipo_local;
+}
+
+if ($avaliacaoMinima > 0) {
+    $query .= " AND media_avaliacoes >= :avaliacao_min";
+    $params[':avaliacao_min'] = $avaliacaoMinima;
+}
+
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 $locais = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?> 
+?>
 <div class="container mx-auto px-4 py-8">
 
     <!-- Filtros -->
@@ -64,33 +76,65 @@ $locais = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Pop-up para os filtros de preço -->
     <div id="filterPopup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-1/3">
-            <h2 class="text-lg font-semibold text-gray-700 mb-4">Filtrar por Preço</h2>
-            <form method="POST">
-                <div class="mb-4">
-                    <label for="preco_min" class="block text-sm font-medium text-gray-700">Preço Mínimo</label>
-                    <input type="number" step="0.01" min="0" id="preco_min" name="preco_min"
-                        value="<?php echo htmlspecialchars($precoMinimo); ?>"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                </div>
-                <div class="mb-4">
-                    <label for="preco_max" class="block text-sm font-medium text-gray-700">Preço Máximo</label>
-                    <input type="number" step="0.01" min="0" id="preco_max" name="preco_max"
-                        value="<?php echo htmlspecialchars($precoMaximo); ?>"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                </div>
+    <div class="bg-white rounded-lg p-6 w-1/3">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Filtros</h2>
 
-                <button type="submit"
-                    class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
-                    Aplicar Filtros
-                </button>
-            </form>
-            <button onclick="toggleFilterPopup()"
-                class="mt-4 w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                Fechar
+        <form method="POST">
+            <!-- Filtro por Preço -->
+            <div class="mb-4">
+                <label for="preco_min" class="block text-sm font-medium text-gray-700">Preço Mínimo</label>
+                <input type="number" step="0.01" min="0" id="preco_min" name="preco_min"
+                    value="<?php echo htmlspecialchars($precoMinimo ?? ''); ?>"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+            </div>
+            <div class="mb-4">
+                <label for="preco_max" class="block text-sm font-medium text-gray-700">Preço Máximo</label>
+                <input type="number" step="0.01" min="0" id="preco_max" name="preco_max"
+                    value="<?php echo htmlspecialchars($precoMaximo ?? ''); ?>"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+            </div>
+
+            <!-- Dropdown de Tipo de Local -->
+            <div class="mb-4">
+                <label for="tipo_local" class="block text-sm font-medium text-gray-700">Tipo de Local</label>
+                <select id="tipo_local" name="tipo_local"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+                    <option value="">Selecione...</option>
+                    <option value="Edicula" <?php echo isset($tipo_local) && $tipo_local == 'Edicula' ? 'selected' : ''; ?>>
+                        Edícula
+                    </option>
+                    <option value="Salão" <?php echo isset($tipo_local) && $tipo_local == 'Salão' ? 'selected' : ''; ?>>
+                        Salão
+                    </option>
+                    <option value="Chácara" <?php echo isset($tipo_local) && $tipo_local == 'Chácara' ? 'selected' : ''; ?>>
+                        Chácara
+                    </option>
+                </select>
+            </div>
+
+            <!-- Filtro por Avaliação -->
+            <div class="mb-4">
+                <label for="avaliacao" class="block text-sm font-medium text-gray-700">Avaliação Mínima</label>
+                <div class="flex">
+                    <input type="hidden" name="avaliacao_min" id="avaliacao_min" value="0">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <span class="cursor-pointer text-2xl star" data-value="<?php echo $i; ?>">★</span>
+                    <?php endfor; ?>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                Aplicar Filtros
             </button>
-        </div>
+        </form>
+
+        <button onclick="toggleFilterPopup()"
+            class="mt-4 w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+            Fechar
+        </button>
     </div>
+</div>
 
     <!-- Exibe os locais -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 p-4">
@@ -142,6 +186,18 @@ function toggleFilterPopup() {
     const popup = document.getElementById('filterPopup');
     popup.classList.toggle('hidden');
 }
+document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', function () {
+        let rating = this.getAttribute('data-value');
+        document.getElementById('avaliacao_min').value = rating;
+
+        // Destacar as estrelas selecionadas
+        document.querySelectorAll('.star').forEach(s => s.classList.remove('text-yellow-400'));
+        for (let i = 0; i < rating; i++) {
+            document.querySelectorAll('.star')[i].classList.add('text-yellow-400');
+        }
+    });
+});
 </script>
 
 <?php

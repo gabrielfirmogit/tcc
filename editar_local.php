@@ -40,15 +40,17 @@ if (isset($_POST['update_dados'])) {
                 nome = :nome, 
                 descricao = :descricao, 
                 preco = :preco, 
-                endereco = :endereco 
+                endereco = :endereco, 
+                tipo_local = :tipo_local 
               WHERE id = :id_local";
-              
+
     $stmt = $pdo->prepare($query);
     $stmt->execute([
         'nome' => $_POST['nome'],
         'descricao' => $_POST['descricao'],
         'preco' => $_POST['preco'],
         'endereco' => $_POST['endereco'],
+        'tipo_local' => $_POST['tipo_local'],
         'id_local' => $id_local
     ]);
 
@@ -135,6 +137,15 @@ renderNavbar();
                 <textarea id="descricao" name="descricao" required
                     class="mt-1 block w-full p-2 border rounded"><?php echo htmlspecialchars($local['descricao']); ?></textarea>
             </div>
+            <div class="mb-4">
+    <label for="tipo_local" class="block text-gray-700">Tipo de Local:</label>
+    <select id="tipo_local" name="tipo_local" required class="mt-1 block w-full p-2 border rounded">
+        <option value="Edicula" <?php echo $local['tipo_local'] === 'Edicula' ? 'selected' : ''; ?>>Edícula</option>
+        <option value="Salao" <?php echo $local['tipo_local'] === 'Salao' ? 'selected' : ''; ?>>Salão</option>
+        <option value="Chacara" <?php echo $local['tipo_local'] === 'Chacara' ? 'selected' : ''; ?>>Chácara</option>
+    </select>
+</div>
+
             <div class="mb-4">
                 <label for="preco" class="block text-gray-700">Preço:</label>
                 <input type="number" step="0.01" id="preco" name="preco"

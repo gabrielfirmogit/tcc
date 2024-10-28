@@ -31,7 +31,7 @@ renderHead($titulo_cabecalho); // Chama a função para renderizar o cabeçalho
                 </div>
                 <button type="submit" class="w-full bg-purple-500 text-white py-2 rounded">Entrar</button>
             </form>
-            <a href="cadastro_usuario.php" class="mt-4 text-sm hover:text-purple-600 hover:underline">não possui uma
+            <a href="cadastro_usuario.php" class="mt-4 text-sm hover:text-purple-600 hover:underline">Não possui uma
                 conta? </a>
         </div>
     </div> <?php renderFooter(); // Inclui o rodapé ?>

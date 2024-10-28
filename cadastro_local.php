@@ -47,6 +47,17 @@ renderNavbar();
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"></textarea>
             </div>
             <div>
+    <label for="tipo_local" class="block text-sm font-medium text-gray-700">Tipo de Local</label>
+    <select id="tipo_local" name="tipo_local" required
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
+        <option value="" disabled selected>Selecione um tipo</option>
+        <option value="Edicula">Edícula</option>
+        <option value="Salao">Salão</option>
+        <option value="Chacara">Chácara</option>
+    </select>
+</div>
+
+            <div>
                 <label for="preco" class="block text-sm font-medium text-gray-700">Preço da Diária</label>
                 <div class="mt-1 relative rounded-md shadow-sm">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
